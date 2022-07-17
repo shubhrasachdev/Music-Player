@@ -1,21 +1,27 @@
 let playlistCount = 0;
+let playlistNum = 0;
+let takenPlaylistNums = [];
 
 const initialize = () => {
     const playlists =  Object.keys(data.playlists)
-    for(const playlist of playlists) createPlaylist(playlist);
+    for(const playlist of playlists) {
+        createPlaylist(playlist);
+        playlistNum++;
+        playlistCount++;
+    }
     $('.create-playlist-container').click(() => {
-        // TODO: Add created playlists to data
         createPlaylist();
     });
 
 }
+// TODO: Save changes to data in json before exiting the application
 
-const addPlaylistEvents = (id) => {
-    const playlist = $(`#playlist-${id}`);
-    const playlistName = $(`#playlist-${id} .playlist-name`);
-    const playlistActions = $(`#playlist-${id} .playlist-actions`);
-    const playlistEdit = $(`#playlist-${id} .edit`);
-    const playlistDelete = $(`#playlist-${id} .delete`);
+const addPlaylistEvents = (playlistId) => {
+    const playlist = $(`#playlist-${playlistId}`);
+    const playlistName = $(`#playlist-${playlistId} .playlist-name`);
+    const playlistActions = $(`#playlist-${playlistId} .playlist-actions`);
+    const playlistEdit = $(`#playlist-${playlistId} .edit`); // TODO: Implement Edit Playlist
+    const playlistDelete = $(`#playlist-${playlistId} .delete`); // TODO: Implement Delete Playlist
     
     playlist.mouseenter(function() {
         playlistActions.animate({
@@ -27,21 +33,28 @@ const addPlaylistEvents = (id) => {
     .mouseleave(function() {
         playlistName.animate({
             width: "calc(300px - 1rem)" 
-        }, 300);
+        }, 100);
         playlistActions.animate({
             width: "0px" 
-        }, 300);
+        }, 100);
         playlistEdit.css({visibility: 'hidden'});
         playlistDelete.css({visibility: 'hidden'});
     });
 }
 
-// TODO: add playlist number concept
 const createPlaylist = (playlistName) => {
-    playlistCount++;
-    if(!playlistName) playlistName = `Playlist #${playlistCount}`;
+    const playlists =  Object.keys(data.playlists);
+    
+    if(!playlistName){ 
+        while(playlists.includes(`Playlist #${playlistNum}`)) playlistNum++;
+        playlistName = `Playlist #${playlistNum}`;
+    }
+    
+    // console.log(playlistNum);
+    // console.log(playlistName);
+
     $(".playlist-container").append(`
-            <div class="playlist" id="playlist-${playlistCount}">
+            <div class="playlist" id="playlist-${playlistNum}">
                     <div class="playlist-name">${playlistName}</div>
                     <div class="playlist-actions"> 
                         <div class="edit material-symbols-outlined">edit</div>
@@ -49,9 +62,9 @@ const createPlaylist = (playlistName) => {
                     </div>
                 </div>
     `);
-
+    data.playlists[playlistName] = [];
     // Add events to new playlist
-    addPlaylistEvents(playlistCount);
+    addPlaylistEvents(playlistNum);
 }
 
 initialize();

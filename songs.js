@@ -174,6 +174,8 @@ const data = {
     ],
     "liked": [],
     "playlists": {
-        "Shubh 1": []
+        "Shubh 1": [],
+        "Playlist #2": [],
+        "Playlist #0": []
     }
 }
