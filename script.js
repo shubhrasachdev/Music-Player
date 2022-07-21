@@ -3,25 +3,29 @@ let playlistNum = 0;
 let takenPlaylistNums = [];
 
 const initialize = () => {
+    const PS = new PerfectScrollbar(".playlist-container", {
+        wheelSpeed: 1,
+        wheelPropagation: true
+    });
+
     const playlists =  Object.keys(data.playlists)
     for(const playlist of playlists) {
         createPlaylist(playlist);
         playlistNum++;
         playlistCount++;
     }
-    $('.create-playlist-container').click(() => {
+    $('.create-playlist').click(() => {
         createPlaylist();
     });
 
 }
-// TODO: Save changes to data in json before exiting the application
 
 const addPlaylistEvents = (playlistId) => {
     const playlist = $(`#playlist-${playlistId}`);
     const playlistName = $(`#playlist-${playlistId} .playlist-name`);
     const playlistActions = $(`#playlist-${playlistId} .playlist-actions`);
-    const playlistEdit = $(`#playlist-${playlistId} .edit`); // TODO: Implement Edit Playlist
-    const playlistDelete = $(`#playlist-${playlistId} .delete`); // TODO: Implement Delete Playlist
+    const playlistEdit = $(`#playlist-${playlistId} .edit`); 
+    const playlistDelete = $(`#playlist-${playlistId} .delete`);
     
     playlist.mouseenter(function() {
         playlistActions.animate({
@@ -40,8 +44,18 @@ const addPlaylistEvents = (playlistId) => {
         playlistEdit.css({visibility: 'hidden'});
         playlistDelete.css({visibility: 'hidden'});
     });
+
+    playlistEdit.click(() => {
+        editPlaylist(playlistId);
+    });
+
+    playlistDelete.click(() => {
+        deletePlaylist(playlistId);
+    });
+
 }
 
+// TODO: Add new playlist to data in songs.json
 const createPlaylist = (playlistName) => {
     const playlists =  Object.keys(data.playlists);
     
@@ -65,6 +79,16 @@ const createPlaylist = (playlistName) => {
     data.playlists[playlistName] = [];
     // Add events to new playlist
     addPlaylistEvents(playlistNum);
+}
+
+// TODO: Implement Edit Playlist
+const editPlaylist = (playlistId) => {
+    console.log("Editing " + playlistId);
+}
+
+// TODO: Implement Delete Playlist
+const deletePlaylist = (playlistId) => {
+    console.log("Deleting " + playlistId);
 }
 
 initialize();

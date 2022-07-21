@@ -7,10 +7,6 @@ body{
     color: rgb(255, 252, 248);
 }
 
-::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-}
-
 .container {
     width: 100vw;
     height: calc(100vh - 72px);
@@ -21,9 +17,6 @@ body{
 .menu-bar {
     width: 300px;
     background-color: #db1d3f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 hr {
@@ -31,8 +24,15 @@ hr {
     border-top: 1px solid rgba(255,255,255,.3);
     border-bottom: 1px solid rgba(0,0,0,.08);
     margin-top: 1.5em;
+    margin-bottom: 8px;
     width: 80%;
     position: relative;
+}
+
+.playlist-container {
+    position:relative;
+    height: 425px;
+    overflow-y: scroll;
 }
 
 .music-container {
@@ -53,8 +53,7 @@ hr {
     white-space: nowrap;
 }
 
-.playlist,
-#liked {
+.playlist {
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
@@ -63,19 +62,13 @@ hr {
     justify-content: center;
 }
 
-.playlist:hover,
-#liked:hover {
+.playlist:hover {
     background-color: rgb(243 50 85);
 }
 
 .playlist-name {
     width: calc(300px - 1rem);
     text-align: center;
-}
-
-#liked .playlist-name {
-    padding-left: 50px;
-    text-align: left;
 }
 
 .playlist-actions {
@@ -100,26 +93,24 @@ hr {
 
 
 .playlist,
-.create-text {
+.menu-bar-item-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/* TODO: Consistent styling for Liked and Add Playlist */
-.create-playlist-container {
+
+.menu-bar-item {
     display: flex;
-    background-color: rgba(35, 35, 35, 0.3);
-    /* justify-content: center; */
-    margin: 0.5rem;
     padding: 0.7rem;
 }
 
-.create-playlist-container:hover{
+.menu-bar-item:hover{
     background-color: rgba(35, 35, 35, 0.4);
     cursor: pointer;
 }
 
-.add {
+.add,
+.favorite {
     color: rgb(255, 252, 248);
     font-variation-settings:
     'FILL' 0,
@@ -128,7 +119,7 @@ hr {
     'opsz' 20;
 }
 
-.create-text {
+.menu-bar-item-text {
     margin-left: 0.5rem;
     font-size: 0.8rem;
 }
