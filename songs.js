@@ -174,17 +174,33 @@ const data = {
     ],
     "liked": [],
     "playlists": {
-        "Shubh 1": [],
-        "Playlist #2": [],
-        "Playlist #0": [],
-        "Shubh 2": [],
-        "Playlist #13": [],
-        "Playlist #4353": [],
-        "Shubh": [],
-        "Playlist #56": [],
-        "Playlist #45": [],
-        "Shubh 12": [],
-        "Playlist #10": [],
-        "Playlist #111": []
+        "Shubh 1": {
+            description: "Yolo my friend!",
+            songs: ['humongo', 'abc']
+        },
+        "Playlist #2": {
+            description: "",
+            songs: []
+        },
+        "Playlist #0": {
+            description: "",
+            songs: []
+        },
+        "Shubh 2": {
+            description: "",
+            songs: []
+        },
+        "Playlist #13": {
+            description: "",
+            songs: []
+        },
+        "Playlist #4353": {
+            description: "",
+            songs: []
+        },
+        "Shubh": {
+            description: "",
+            songs: []
+        },
     }
 }

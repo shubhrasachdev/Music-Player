@@ -54,8 +54,8 @@ hr {
 }
 
 .playlist {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     padding: 0.5rem;
     display: flex;
     align-items: center;
@@ -122,4 +122,109 @@ hr {
 .menu-bar-item-text {
     margin-left: 0.5rem;
     font-size: 0.8rem;
+}
+
+.modal-parent {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(68, 68, 68, 0.445);
+    position: absolute;
+    top: 0;
+}
+
+.modal {
+    background-color: rgba(35, 35, 35, 0.99);
+    position: absolute;
+    padding: 20px;
+    width: 400px;
+    height: 300px;
+    box-shadow: rgb(0 0 0 / 13%) 0px 6.4px 14.4px 0px, rgb(0 0 0 / 11%) 0px 1.2px 3.6px 0px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.modal-close {
+    cursor: pointer;
+}
+
+.modal-content {
+    display: flex;
+    justify-content: space-between;
+    height: 170px;
+}
+
+.modal-content .image {
+    width: 170px;
+    margin-right: 10px;
+    border-radius: 4px;
+    background-color: rgb(55, 55, 55);
+}
+
+.modal-details {
+    display: flex;
+    flex-direction: column;
+    width: 210px;
+}
+.modal-playlist-name input,
+.modal-playlist-desc textarea {
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 4px;
+    font-family: inherit;
+    background-color: rgb(55, 55, 55);
+    color: #fff;
+}
+
+.modal-playlist-name input {
+    height: 40px;
+    margin-bottom: 10px;
+    
+}
+
+.modal-playlist-desc textarea {
+    resize: none;
+    height: 120px;
+}
+
+input:focus {outline:none !important}
+textarea:focus {outline:none !important}
+
+.modal-footer {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-error {
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+.button {    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.save-button {
+    width: 65px;
+    height: 35px;
+    background-color: rgb(255, 252, 248);
+    color: black;
 }

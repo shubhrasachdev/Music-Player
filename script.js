@@ -2,6 +2,8 @@ let playlistCount = 0;
 let playlistNum = 0;
 let takenPlaylistNums = [];
 
+// TODO: Save data to songs.json before closing the application
+
 const initialize = () => {
     const PS = new PerfectScrollbar(".playlist-container", {
         wheelSpeed: 1,
@@ -18,6 +20,15 @@ const initialize = () => {
         createPlaylist();
     });
 
+}
+
+// TODO: Utilize local storage instead. This is a sucky way of doing it!!!
+const saveDataToJson = () => {
+    let href = `data:application/json,${encodeURIComponent(JSON.stringify(data))}`;
+    let a = $(`<a href=${href} download="songs.js"/>`);
+    $(".container").append(a);
+    a[0].click();
+    a.remove();
 }
 
 const addPlaylistEvents = (playlistId) => {
@@ -46,6 +57,7 @@ const addPlaylistEvents = (playlistId) => {
     });
 
     playlistEdit.click(() => {
+        
         editPlaylist(playlistId);
     });
 
@@ -55,7 +67,6 @@ const addPlaylistEvents = (playlistId) => {
 
 }
 
-// TODO: Add new playlist to data in songs.json
 const createPlaylist = (playlistName) => {
     const playlists =  Object.keys(data.playlists);
     
@@ -76,19 +87,82 @@ const createPlaylist = (playlistName) => {
                     </div>
                 </div>
     `);
-    data.playlists[playlistName] = [];
+    data.playlists[playlistName] = {
+        description: data.playlists[playlistName].description ? data.playlists[playlistName].description : '',
+        songs: data.playlists[playlistName].songs ? data.playlists[playlistName].songs : []
+    };
     // Add events to new playlist
     addPlaylistEvents(playlistNum);
 }
 
-// TODO: Implement Edit Playlist
 const editPlaylist = (playlistId) => {
-    console.log("Editing " + playlistId);
+    const playlist =  $(`#playlist-${playlistId} .playlist-name`);
+    const playlistName = playlist.text();
+    console.log(playlistName);
+    console.log(typeof(data.playlists));
+    console.log(data.playlists["Shubh 1"]);
+
+    const editPlaylistModal = $(`<div class="modal-parent">
+        <div class="modal playlist-edit">
+            <div class="modal-header">
+                <div class="modal-title">Edit Playlist</div>
+                <div class="modal-close material-symbols-outlined">close</div> 
+            </div>
+            <div class="modal-content">
+                <div class="image">
+                    <img src=""/>
+                </div>
+                <div class="modal-details">
+                    <div class="modal-playlist-name">
+                        <input value="${playlistName}" />
+                    </div>
+                    <div class="modal-playlist-desc">
+                        <textarea maxlength="200" placeholder="Optional Description">${data.playlists[playlistName]['description']}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-error"> </div>
+                <div class="button save-button">Save</div>
+            </div>
+        </div>
+    </div>`);
+    $('.container').append(editPlaylistModal);
+    
+    new PerfectScrollbar("textarea", {wheelSpeed: 1, wheelPropagation: true});
+    
+    $('.modal-close').click(() => $('.modal-parent').remove());
+    
+    $('.save-button').click(() => {
+        console.log("Inside save");
+        const newPlaylistName = $('.modal-playlist-name input').val();
+        const newPlaylistDesc = $('.modal-playlist-desc textarea').val();
+        const playlists = Object.keys(data.playlists);
+        $('.modal-error').text("");
+        if(newPlaylistName !== '' && !playlists.includes(newPlaylistName)) {
+            console.log(data.playlists[playlistName]);
+            const playlistSongs = [...data.playlists[playlistName]['songs']];
+            delete data.playlists[playlistName];
+            data.playlists[newPlaylistName] = {
+                description: newPlaylistDesc,
+                songs: playlistSongs
+            }
+            playlist.text(newPlaylistName);
+            saveDataToJson(); 
+            $('.modal-parent').remove();
+        } else {
+            $('.modal-error').text("Invalid Playlist name.");
+            console.log("error??")
+        }
+    });
+    
 }
 
 // TODO: Implement Delete Playlist
 const deletePlaylist = (playlistId) => {
     console.log("Deleting " + playlistId);
+    console.log(data);
 }
 
 initialize();
+
