@@ -1,14 +1,15 @@
 let playlistCount = 0;
 let playlistNum = 0;
 let takenPlaylistNums = [];
-
-// TODO: Save data to songs.json before closing the application
-
+let data = {};
 const initialize = () => {
     const PS = new PerfectScrollbar(".playlist-container", {
         wheelSpeed: 1,
         wheelPropagation: true
     });
+
+    if(localStorage.getItem('data') == null) localStorage.setItem('data', JSON.stringify(initData));
+    else data = JSON.parse(localStorage.getItem('data'));
 
     const playlists =  Object.keys(data.playlists)
     for(const playlist of playlists) {
@@ -18,17 +19,9 @@ const initialize = () => {
     }
     $('.create-playlist').click(() => {
         createPlaylist();
+        localStorage.setItem('data', JSON.stringify(data));
     });
-
-}
-
-// TODO: Utilize local storage instead. This is a sucky way of doing it!!!
-const saveDataToJson = () => {
-    let href = `data:application/json,${encodeURIComponent(JSON.stringify(data))}`;
-    let a = $(`<a href=${href} download="songs.js"/>`);
-    $(".container").append(a);
-    a[0].click();
-    a.remove();
+    
 }
 
 const addPlaylistEvents = (playlistId) => {
@@ -70,13 +63,10 @@ const addPlaylistEvents = (playlistId) => {
 const createPlaylist = (playlistName) => {
     const playlists =  Object.keys(data.playlists);
     
-    if(!playlistName){ 
+    if(playlistName == undefined){ 
         while(playlists.includes(`Playlist #${playlistNum}`)) playlistNum++;
         playlistName = `Playlist #${playlistNum}`;
     }
-    
-    // console.log(playlistNum);
-    // console.log(playlistName);
 
     $(".playlist-container").append(`
             <div class="playlist" id="playlist-${playlistNum}">
@@ -88,19 +78,17 @@ const createPlaylist = (playlistName) => {
                 </div>
     `);
     data.playlists[playlistName] = {
-        description: data.playlists[playlistName].description ? data.playlists[playlistName].description : '',
-        songs: data.playlists[playlistName].songs ? data.playlists[playlistName].songs : []
+        description: data.playlists[playlistName] && data.playlists[playlistName].description ? data.playlists[playlistName].description : '',
+        songs: data.playlists[playlistName] && data.playlists[playlistName].songs ? data.playlists[playlistName].songs : []
     };
     // Add events to new playlist
     addPlaylistEvents(playlistNum);
 }
 
+// TODO: Add Album Art
 const editPlaylist = (playlistId) => {
     const playlist =  $(`#playlist-${playlistId} .playlist-name`);
     const playlistName = playlist.text();
-    console.log(playlistName);
-    console.log(typeof(data.playlists));
-    console.log(data.playlists["Shubh 1"]);
 
     const editPlaylistModal = $(`<div class="modal-parent">
         <div class="modal playlist-edit">
@@ -143,12 +131,12 @@ const editPlaylist = (playlistId) => {
             console.log(data.playlists[playlistName]);
             const playlistSongs = [...data.playlists[playlistName]['songs']];
             delete data.playlists[playlistName];
+            playlist.text(newPlaylistName);
             data.playlists[newPlaylistName] = {
                 description: newPlaylistDesc,
                 songs: playlistSongs
             }
-            playlist.text(newPlaylistName);
-            saveDataToJson(); 
+            localStorage.setItem('data', JSON.stringify(data));
             $('.modal-parent').remove();
         } else {
             $('.modal-error').text("Invalid Playlist name.");
@@ -160,8 +148,10 @@ const editPlaylist = (playlistId) => {
 
 // TODO: Implement Delete Playlist
 const deletePlaylist = (playlistId) => {
-    console.log("Deleting " + playlistId);
-    console.log(data);
+    const playlistName =  $(`#playlist-${playlistId} .playlist-name`).text();
+    $(`#playlist-${playlistId}`).remove();
+    delete data.playlists[playlistName];
+    localStorage.setItem('data', JSON.stringify(data));
 }
 
 initialize();

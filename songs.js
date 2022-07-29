@@ -1,4 +1,4 @@
-const data = {
+const initData = {
     "songs": [
         {
             "id": 1,
