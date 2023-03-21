@@ -146,7 +146,6 @@ const editPlaylist = (playlistId) => {
     
 }
 
-// TODO: Implement Delete Playlist
 const deletePlaylist = (playlistId) => {
     const playlistName =  $(`#playlist-${playlistId} .playlist-name`).text();
     $(`#playlist-${playlistId}`).remove();
